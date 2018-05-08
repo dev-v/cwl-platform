@@ -1,0 +1,47 @@
+buildscript {
+  repositories {
+    maven {
+      url 'http://maven.aliyun.com/nexus/content/groups/public'
+    }
+    maven { url 'https://repo.spring.io/release/' }
+    mavenLocal()
+    jcenter()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
+}
+
+subprojects {
+
+  apply plugin: 'java'
+  apply plugin: 'eclipse'
+  apply plugin: 'org.springframework.boot'
+  apply plugin: 'io.spring.dependency-management'
+
+  repositories {
+    maven {
+      url 'http://maven.aliyun.com/nexus/content/groups/public'
+    }
+    maven { url 'https://repo.spring.io/release/' }
+    mavenLocal()
+    jcenter()
+  }
+
+  dependencies {
+    compileOnly('org.projectlombok:lombok')
+    compile("com.alibaba:fastjson:${fastjsonVersion}")
+    compile('org.apache.commons:commons-lang3:3.7')
+    compile('commons-collections:commons-collections:3.2.2')
+    compile('org.springframework.boot:spring-boot-starter')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+  }
+
+  dependencyManagement {
+    imports {
+      mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+  }
+
+  apply from: "$rootProject.projectDir/publish.gradle"
+}

@@ -31,8 +31,8 @@ repositories.gradle
 */build/*
 build/*
 
-*/out/*
+out/*
 
 .idea/**
 
-*.iml
+dber.iml

@@ -1,0 +1,23 @@
+apply plugin: "maven-publish"
+task sourceJar(type: Jar) {
+  from sourceSets.main.allJava
+  classifier "sources"
+}
+
+publishing {
+  publications {
+    maven(MavenPublication) {
+      from components.java
+
+      artifact sourceJar
+
+      groupId "$group"
+      artifactId "$project.name"
+      version "$version"
+    }
+  }
+
+  repositories {
+    mavenLocal()
+  }
+}

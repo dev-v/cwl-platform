@@ -1,0 +1,6 @@
+dependencies {
+  compile("com.dber:platform-service:${version}")
+  testCompile 'junit:junit:4.12',
+          "org.springframework:spring-test",
+          "org.springframework.boot:spring-boot-test"
+}

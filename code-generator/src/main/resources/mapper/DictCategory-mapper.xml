@@ -1,0 +1,173 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dber.generator.mapper.IDictCategoryMapper">
+
+	<select id="get" resultType="DictCategory">
+		select * from dict_category where id=#{id}
+	</select>
+
+	<delete id="del">
+		delete from dict_category where id = #{id}
+	</delete>
+
+	<select id="gets" resultType="DictCategory">
+		SELECT * FROM dict_category WHERE id IN
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")"> #{item}
+		</foreach>
+	</select>
+
+	<sql id="maxLimit">
+		limit 1000
+	</sql>
+
+	<delete id="dels">
+		delete from dict_category where id in
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")"> #{item}
+		</foreach>
+		<include refid="maxLimit"></include>
+	</delete>
+
+	<sql id="insertList">
+		(
+		<trim suffixOverrides=",">
+			<if test="id!=null">
+				id,
+			</if>
+			<if test="code!=null">
+				_code,
+			</if>
+			<if test="category!=null">
+				category,
+			</if>
+			<if test="sys!=null">
+				sys,
+			</if>
+			<if test="content!=null">
+				content,
+			</if>
+		</trim>
+		) values (
+		<trim suffixOverrides=",">
+			<if test="id!=null">
+				#{id},
+			</if>
+			<if test="code!=null">
+				#{code},
+			</if>
+			<if test="category!=null">
+				#{category},
+			</if>
+			<if test="sys!=null">
+				#{sys},
+			</if>
+			<if test="content!=null">
+				#{content},
+			</if>
+		</trim>
+
+		)
+	</sql>
+
+	<!-- 注意检查非空和主键自增属性 -->
+	<insert id="insert" keyProperty="id" useGeneratedKeys="true">
+		insert
+		into dict_category
+		<include refid="insertList"></include>
+	</insert>
+
+	<update id="update">
+		update dict_category
+		<set>
+						<if test="code != null ">
+				_code=#{code},
+			</if>
+			<if test="category != null ">
+				category=#{category},
+			</if>
+			<if test="sys != null ">
+				sys=#{sys},
+			</if>
+			<if test="content != null ">
+				content=#{content},
+			</if>
+
+		</set>
+		where id = #{id}
+	</update>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+		<!-- 不包含数据库类型为TIMESTAMP（由数据库自动管理）的列 -->
+		insert into dict_category
+		<include refid="insertList"></include>
+		ON DUPLICATE KEY
+		UPDATE
+		<trim suffixOverrides=",">
+						<if test="code != null ">
+				_code=values(_code),
+			</if>
+			<if test="category != null ">
+				category=values(category),
+			</if>
+			<if test="sys != null ">
+				sys=values(sys),
+			</if>
+			<if test="content != null ">
+				content=values(content),
+			</if>
+
+		</trim>
+	</insert>
+
+	<sql id="queryList">
+		select id,_code,category,sys,content,create_time,modify_time from
+		dict_category
+	</sql>
+
+	<sql id="where">
+		<trim prefix="WHERE" prefixOverrides="AND">
+						<if test="id != null">
+				AND id=#{id}
+			</if>
+			<if test="code != null">
+				AND _code=#{code}
+			</if>
+			<if test="category != null">
+				AND category=#{category}
+			</if>
+			<if test="sys != null">
+				AND sys=#{sys}
+			</if>
+			<if test="content != null">
+				AND content=#{content}
+			</if>
+			<if test="createTime != null">
+				AND create_time=#{createTime}
+			</if>
+			<if test="modifyTime != null">
+				AND modify_time=#{modifyTime}
+			</if>
+
+		</trim>
+	</sql>
+
+	<select id="query" resultType="DictCategory">
+		<include refid="queryList"></include>
+		<include refid="where"></include>
+	</select>
+
+	<select id="queryWithoutPage" resultType="DictCategory">
+		<include refid="queryList"></include>
+		<include refid="where"></include>
+		<include refid="maxLimit"></include>
+	</select>
+
+	<select id="getIds" resultType="long">
+		select id from dict_category
+		<include refid="where"></include>
+		<include refid="maxLimit"></include>
+	</select>
+
+</mapper>

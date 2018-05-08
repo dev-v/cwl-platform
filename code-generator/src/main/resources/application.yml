@@ -1,0 +1,44 @@
+spring:
+  profiles:
+    active:
+      - dev
+  session:
+    store-type: redis
+
+logging:
+  path: logs
+
+---
+spring:
+  profiles: dev
+  redis:
+    host: 192.168.120.3
+    port: 6379
+    database: 0
+    pool:
+      min-idle: 2
+
+dber.generator:
+  service:
+    mysql:
+      host: localhost
+      port: 3306
+      database: information_schema
+      username: root
+      password: cwl123
+      parameters: characterEncoding=utf8&rewriteBatchedStatements=true&autoReconnect=true
+      initialSize: 1
+      maxActive: 2
+      minIdle: 1
+      queryTimeOut: 5
+    plat:
+      host: localhost
+      port: 3306
+      database: dber_plat
+      username: root
+      password: cwl123
+      parameters: characterEncoding=utf8&rewriteBatchedStatements=true&autoReconnect=true
+      initialSize: 1
+      maxActive: 2
+      minIdle: 1
+      queryTimeOut: 5
