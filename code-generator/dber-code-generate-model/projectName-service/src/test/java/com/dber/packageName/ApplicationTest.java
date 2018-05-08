@@ -1,6 +1,4 @@
-package com.dber.
-
-#{packageName};
+package com.dber.#{packageName};
 
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;
