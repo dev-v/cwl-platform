@@ -1,6 +1,6 @@
 package com.dber.#{packageName}.web.controller;
 
-import com.dber.#{packageName}.api.ExampleApi;
+import com.dber.#{packageName}.api.api.ExampleApi;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

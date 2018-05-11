@@ -55,6 +55,11 @@ public class ProjectGeneratorTest {
   }
 
   @Test
+  public void auth() {
+    generator.createProject(new Project(modelPath, projectDir, "dber_auth", "auth", "auth"));
+  }
+
+  @Test
   public void demo() {
     generator.createProject(new Project(modelPath, projectDir, "dber_demo", "demo", "demo"));
   }
