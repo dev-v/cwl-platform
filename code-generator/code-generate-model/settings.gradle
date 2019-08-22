@@ -1,4 +1,4 @@
-rootProject.name = 'demo'
+rootProject.name = '#{projectName}'
 
 include '#{packageName}-api'
 include '#{packageName}-service'
