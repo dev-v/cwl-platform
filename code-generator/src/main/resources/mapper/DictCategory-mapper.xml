@@ -1,7 +1,7 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dber.generator.mapper.IDictCategoryMapper">
+<mapper namespace="com.cwl.generator.mapper.IDictCategoryMapper">
 
 	<select id="get" resultType="DictCategory">
 		select * from dict_category where id=#{id}

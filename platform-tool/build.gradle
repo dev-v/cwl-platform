@@ -1,10 +1,9 @@
+//
 bootRepackage {
   enabled = false
 }
 
 dependencies {
-  compileOnly('org.projectlombok:lombok')
-
   compile('redis.clients:jedis:2.9.0')
   compile('biz.paluch.redis:lettuce:4.4.2.Final')
   compile('org.springframework.boot:spring-boot-starter-data-redis')

@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: #{packageName}-service
+  profiles:
+    active: dev
+  cloud:
+    discovery:
+      enable: true
+      service-id: config-server
+server:
+  port: 0
+eureka:
+  instance:
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${random.int}
+management:
+  security:
+    enabled: false
+
+---
+
+spring:
+  profiles: dev
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+#{projectName}:
+  database:
+    host: localhost
+    port: 3306
+    database: #{packageName}
+    username: root
+    password: cwl123
+    parameters: characterEncoding=utf8&rewriteBatchedStatements=true&autoReconnect=true
+    initialSize: 1
+    maxActive: 2
+    minIdle: 1
+logging:
+  level: debug

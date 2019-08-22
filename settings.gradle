@@ -1,7 +1,6 @@
-rootProject.name = 'platform'
+rootProject.name = 'cwl-platform'
 
 include 'platform-api'
 include 'platform-service'
 include 'platform-tool'
-
 include 'code-generator'

@@ -10,7 +10,7 @@ dependencies {
   compile('org.springframework.boot:spring-boot-starter-amqp')
   compile('org.springframework.boot:spring-boot-starter-actuator')
 
-  compile("com.dber:platform-tool:${version}")
+  compile("com.cwl:platform-tool:${version}")
   compile project(":platform-api")
   testCompile('org.springframework.boot:spring-boot-starter-test')
 }

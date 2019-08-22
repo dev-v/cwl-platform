@@ -29,7 +29,8 @@ subprojects {
   }
 
   dependencies {
-    compileOnly('org.projectlombok:lombok')
+    compileOnly("org.projectlombok:lombok:${lombokVersion}")
+    annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
     compile("com.alibaba:fastjson:${fastjsonVersion}")
     compile('org.apache.commons:commons-lang3:3.7')
     compile('commons-collections:commons-collections:3.2.2')
