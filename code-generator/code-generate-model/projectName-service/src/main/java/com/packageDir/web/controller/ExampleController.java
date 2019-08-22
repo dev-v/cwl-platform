@@ -1,6 +1,6 @@
-package com.cwl.#{packageName}.web.controller;
+package com.#{packageName}.web.controller;
 
-import com.cwl.#{packageName}.api.api.ExampleApi;
+import com.#{packageName}.api.api.ExampleApi;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

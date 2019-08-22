@@ -58,7 +58,7 @@ public class ProjectGenerator {
       File file = new File(path);
       String destPath = path.replace(src, des)
               .replace("projectName", project.getProjectName())
-              .replace("packageName", project.getPackageName());
+              .replace("packageDir", project.getPackageDir());
       if (file.isDirectory()) {
         new File(destPath).mkdirs();
       } else {

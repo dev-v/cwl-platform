@@ -1,5 +1,6 @@
 package com.cwl.generator.entity;
 
+import com.cwl.tool.util.Util;
 import lombok.Data;
 
 import java.io.File;
@@ -43,7 +44,17 @@ public class Project {
   }
 
   public String getJavaName() {
-    return Character.toUpperCase(packageName.charAt(0)) + packageName.substring(1);
+    String tmp = Util.toJavaStyle(packageName);
+    return Character.toUpperCase(tmp.charAt(0)) + tmp.substring(1);
+  }
+
+  public String getPackageDir() {
+    String[] dirs = packageName.split("\\.");
+    String dir = dirs[0];
+    for (int i = 1, len = dirs.length; i < len; i++) {
+      dir += File.separator + dirs[i];
+    }
+    return dir;
   }
 
   public String getUpperCaseName() {

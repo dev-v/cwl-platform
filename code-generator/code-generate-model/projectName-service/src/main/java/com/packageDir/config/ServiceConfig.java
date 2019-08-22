@@ -1,15 +1,14 @@
-package com.cwl.#{packageName}.config;
+package com.#{packageName}.config;
 
 import com.cwl.platform.config.PlatformWebServiceConfig;
 import com.cwl.platform.mybatis.plugin.pagination.PaginationInterceptor;
 import com.cwl.platform.util.DBUtil;
-import com.cwl.tool.config.SystemConfig;
+import com.cwl.tool.config.JdbcPoolConfig;
 import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -35,49 +34,52 @@ import java.io.IOException;
 @Configuration
 @EnableAutoConfiguration
 @EnableTransactionManagement
-@EnableConfigurationProperties({SystemConfig.class})
 @Import(PlatformWebServiceConfig.class)
-@ComponentScan("com.cwl.#{packageName}")
-@MapperScan(basePackages = {"com.cwl.demo.mapper"})
+@ComponentScan("com.#{packageName}")
+@MapperScan(basePackages = {"com.#{packageName}.mapper"})
 public class #{projectJavaName}ServiceConfig {
-	@Autowired
-	private SystemConfig systemConfig;
 
 	@Bean
-	public DataSource #{packageName}DataSource() {
-		DataSource #{packageName}DataSource = DBUtil.dataSource(systemConfig.getDatabase());
-		return #{packageName}DataSource;
+	@ConfigurationProperties(prefix = "#{projectName}.database")
+	public JdbcPoolConfig jdbcPoolConfig() {
+		return new JdbcPoolConfig();
 	}
 
 	@Bean
-	public DataSourceTransactionManager #{packageName}TransactionManager() {
-		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager(#{packageName}DataSource());
+	public DataSource #{projectName}DataSource() {
+		DataSource #{projectName}DataSource = DBUtil.dataSource(jdbcPoolConfig());
+		return #{projectName}DataSource;
+	}
+
+	@Bean
+	public DataSourceTransactionManager #{projectName}TransactionManager() {
+		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager(#{projectName}DataSource());
 		return transactionManager;
 	}
 
 	@Bean
-	public org.apache.ibatis.session.Configuration #{packageName}MybatisConfiguration() {
+	public org.apache.ibatis.session.Configuration #{projectName}MybatisConfiguration() {
 		org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
 		configuration.setMapUnderscoreToCamelCase(true);
-		configuration.getTypeAliasRegistry().registerAliases("com.cwl.#{packageName}.api.entity");
+		configuration.getTypeAliasRegistry().registerAliases("com.#{packageName}.api.entity");
 		return configuration;
 	}
 
 	@Bean
-	public SqlSessionFactoryBean #{packageName}SqlSessionFactoryBean() throws IOException {
-		SqlSessionFactoryBean #{packageName}SqlSessionFactoryBean = new SqlSessionFactoryBean();
+	public SqlSessionFactoryBean #{projectName}SqlSessionFactoryBean() throws IOException {
+		SqlSessionFactoryBean #{projectName}SqlSessionFactoryBean = new SqlSessionFactoryBean();
 
-		#{packageName}SqlSessionFactoryBean.setDataSource(#{packageName}DataSource());
+		#{projectName}SqlSessionFactoryBean.setDataSource(#{projectName}DataSource());
 
-		#{packageName}SqlSessionFactoryBean.setConfiguration(#{packageName}MybatisConfiguration());
+		#{projectName}SqlSessionFactoryBean.setConfiguration(#{projectName}MybatisConfiguration());
 
 		PathMatchingResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
-		#{packageName}SqlSessionFactoryBean
+		#{projectName}SqlSessionFactoryBean
 				.setMapperLocations(resourceResolver.getResources("classpath*:/mapper/*_mapper.xml"));
 
 		Interceptor[] interceptors = { PaginationInterceptor.getInstance() };
-		#{packageName}SqlSessionFactoryBean.setPlugins(interceptors);
+		#{projectName}SqlSessionFactoryBean.setPlugins(interceptors);
 
-		return #{packageName}SqlSessionFactoryBean;
+		return #{projectName}SqlSessionFactoryBean;
 	}
 }

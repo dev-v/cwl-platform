@@ -1,5 +1,6 @@
-package com.cwl.#{packageName}.api.api;
+package com.#{packageName}.api.api;
 
+import com.#{packageName}.api.#{projectJavaName}ApiConfig;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

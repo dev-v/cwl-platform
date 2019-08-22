@@ -1,9 +1,9 @@
-package com.cwl.#{packageName}.mapper;
+package com.#{packageName}.mapper;
 
 import org.springframework.stereotype.Repository;
 
 import com.cwl.platform.mapper.IMapper;
-import com.cwl.#{packageName}.api.entity.#{javaClassName};
+import com.#{packageName}.api.entity.#{javaClassName};
 
 /**
  * <li>文件名称: I#{javaClassName}Mapper.java</li>

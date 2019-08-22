@@ -1,7 +1,7 @@
-package com.cwl.#{packageName}.service;
+package com.#{packageName}.service;
 
 import com.cwl.platform.service.IService;
-import com.cwl.#{packageName}.api.entity.#{javaClassName};
+import com.#{packageName}.api.entity.#{javaClassName};
 
 /**
  * <li>文件名称: I#{javaClassName}Service.java</li>

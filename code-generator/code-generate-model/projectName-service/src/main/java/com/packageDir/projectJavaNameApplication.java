@@ -1,7 +1,6 @@
-package com.cwl.#{packageName};
+package com.#{packageName};
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
@@ -15,7 +14,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author dev-v
  */
 @SpringBootApplication
-@EnableAutoConfiguration
 public class #{projectJavaName}Application {
 	public static void main(String[] args) {
 		SpringApplication.run(#{projectJavaName}Application.class, args);

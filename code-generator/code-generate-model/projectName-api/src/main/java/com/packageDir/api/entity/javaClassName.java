@@ -1,4 +1,4 @@
-package com.cwl.#{packageName}.api.entity;
+package com.#{packageName}.api.entity;
 
 import lombok.Data;
 

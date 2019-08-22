@@ -1,4 +1,4 @@
 rootProject.name = '#{projectName}'
 
-include '#{packageName}-api'
-include '#{packageName}-service'
+include '#{projectName}-api'
+include '#{projectName}-service'

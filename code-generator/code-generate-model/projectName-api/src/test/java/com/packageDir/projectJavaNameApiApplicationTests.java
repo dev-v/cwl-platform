@@ -1,7 +1,7 @@
-package com.cwl.#{packageName};
+package com.#{packageName};
 
 
-import com.cwl.#{packageName}.api.#{projectJavaName}ApiConfig;
+import com.#{packageName}.api.#{projectJavaName}ApiConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
