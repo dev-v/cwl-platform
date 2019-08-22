@@ -3,7 +3,6 @@ package com.cwl.#{packageName};
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * <li>文件名称: projectJavaNameApplication.java</li>
@@ -16,7 +15,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @author dev-v
  */
 @SpringBootApplication
-@EnableDiscoveryClient
 @EnableAutoConfiguration
 public class #{projectJavaName}Application {
 	public static void main(String[] args) {

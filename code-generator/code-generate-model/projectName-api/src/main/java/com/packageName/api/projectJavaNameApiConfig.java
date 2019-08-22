@@ -2,12 +2,10 @@ package com.cwl.#{packageName}.api;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableDiscoveryClient
 @EnableAutoConfiguration
 @EnableFeignClients(basePackages = "com.cwl.#{packageName}.api")
 @ConditionalOnExpression("#{!environment['spring.application.name'].endsWith('" + #{projectJavaName}ApiConfig.SERVICE_NAME + "')}")
