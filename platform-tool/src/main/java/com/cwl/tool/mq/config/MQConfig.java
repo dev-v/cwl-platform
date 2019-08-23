@@ -3,7 +3,6 @@ package com.cwl.tool.mq.config;
 import com.cwl.tool.config.RedisConfig;
 import com.cwl.tool.mq.IMqManager;
 import com.cwl.tool.redis.mq.RedisMqManager;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -17,11 +16,8 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
  * @version 1.0
  * @since 2018/1/11
  */
-@Configuration
-@Import({RedisConfig.class})
 public class MQConfig {
 
-  @Bean
   public IMqManager iMqManager(LettuceConnectionFactory connectionFactory) {
     return new RedisMqManager(connectionFactory);
   }

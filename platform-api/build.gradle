@@ -5,7 +5,7 @@ bootRepackage {
 dependencies {
   compile('org.springframework.cloud:spring-cloud-starter-config')
   compile('org.springframework.cloud:spring-cloud-starter-openfeign')
-  compile('org.springframework.cloud:spring-cloud-starter-eureka')
+//  compile('org.springframework.cloud:spring-cloud-starter-eureka')
   compile('org.springframework.boot:spring-boot-starter-actuator')
 
   testCompile('org.springframework.boot:spring-boot-starter-test')

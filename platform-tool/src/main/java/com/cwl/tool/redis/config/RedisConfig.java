@@ -23,22 +23,17 @@ import org.springframework.data.redis.connection.lettuce.LettucePool;
  * @version 1.0
  * @since 2017年12月22日
  */
-@EnableConfigurationProperties({SpringConfig.class})
-@Configuration
 //@EnableCaching 容器中需要有CacheManager才可以使用
 public class RedisConfig {
 
-  @Autowired
   SpringConfig springConfig;
 
-  @Bean
   public LettucePool lettucePool() {
     com.cwl.tool.config.RedisConfig config = springConfig.getRedis();
     DefaultLettucePool pool = new DefaultLettucePool(config.getHost(), config.getPort(), config.getPool());
     return pool;
   }
 
-  @Bean
   public LettuceConnectionFactory lettuceConnectionFactory(LettucePool pool) {
     LettuceConnectionFactory factory = new LettuceConnectionFactory(pool);
     return factory;

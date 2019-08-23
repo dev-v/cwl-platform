@@ -44,7 +44,7 @@ public class Project {
   }
 
   public String getJavaName() {
-    String tmp = Util.toJavaStyle(packageName);
+    String tmp = Util.toJavaStyle(projectName);
     return Character.toUpperCase(tmp.charAt(0)) + tmp.substring(1);
   }
 

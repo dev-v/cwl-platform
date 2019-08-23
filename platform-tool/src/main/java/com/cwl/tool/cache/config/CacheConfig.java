@@ -17,11 +17,8 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
  * @version 1.0
  * @since 2018/1/11
  */
-@Configuration
-@Import({RedisConfig.class})
 public class CacheConfig {
 
-    @Bean
     public ICacheService redisCacheService(LettuceConnectionFactory connectionFactory) {
         return new RedisCacheService(connectionFactory);
     }
