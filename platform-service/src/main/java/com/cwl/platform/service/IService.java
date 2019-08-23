@@ -77,6 +77,8 @@ public interface IService<E> {
    */
   int save(E e);
 
+  int saves(Collection<E> es);
+
   /**
    * <pre>
    * 根据主键获取数据

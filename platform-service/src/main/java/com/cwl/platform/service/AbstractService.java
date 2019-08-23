@@ -2,6 +2,7 @@ package com.cwl.platform.service;
 
 import com.cwl.platform.entity.Page;
 import com.cwl.platform.mapper.IMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
@@ -87,6 +88,16 @@ public abstract class AbstractService<E> implements IService<E> {
   @Override
   public int count(E e) {
     return mapper.count(e);
+  }
+
+  @Transactional
+  @Override
+  public int saves(Collection<E> es) {
+    int count = 0;
+    for (E e : es) {
+      save(e);
+    }
+    return count;
   }
 
   /**
