@@ -150,13 +150,18 @@ public class Util {
     return getDateFormat().format(calendar.getTime());
   }
 
+  public static final int getYMD(Calendar calendar) {
+    int ymd = calendar.get(Calendar.YEAR) * 10000;
+    ymd += calendar.get(Calendar.MONTH) * 100;
+    return ymd + calendar.get(Calendar.DAY_OF_MONTH);
+  }
+
   /**
    * <pre>
    * 判定一个对象是否为八种基础类型
    * 或者是否为字符序列
    * </pre>
    *
-   * @param object
    * @return
    */
   public static final boolean isPremitive(Class<?> clazz) {
@@ -264,7 +269,6 @@ public class Util {
    * 转换为key
    * </pre>
    *
-   * @param url
    * @param params
    * @return
    */

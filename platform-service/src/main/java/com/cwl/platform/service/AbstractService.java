@@ -19,7 +19,11 @@ import java.util.Collection;
  */
 public abstract class AbstractService<E> implements IService<E> {
 
-  IMapper<E> mapper;
+  protected IMapper<E> mapper;
+
+  protected AbstractService(IMapper<E> mapper) {
+    this.mapper = mapper;
+  }
 
   @Override
   public int insert(E e) {
@@ -98,21 +102,5 @@ public abstract class AbstractService<E> implements IService<E> {
       save(e);
     }
     return count;
-  }
-
-  /**
-   * <pre>
-   * 返回操作实体 < E > 的纯mapper对象
-   * </pre>
-   *
-   * @return
-   */
-  protected abstract IMapper<E> getMapper();
-
-  @PostConstruct
-  public final void setMapper() {
-    if (this.mapper == null) {
-      this.mapper = getMapper();
-    }
   }
 }

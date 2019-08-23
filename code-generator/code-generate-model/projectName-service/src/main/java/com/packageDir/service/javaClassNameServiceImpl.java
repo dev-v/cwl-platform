@@ -21,12 +21,12 @@ import com.#{packageName}.mapper.#{javaClassName}Mapper;
 @Service
 public class #{javaClassName}ServiceImpl extends AbstractService<#{javaClassName}> implements #{javaClassName}Service {
 
-	@Autowired
 	private #{javaClassName}Mapper mapper;
 
-	@Override
-	protected IMapper<#{javaClassName}> getMapper() {
-		return this.mapper;
+	@Autowired
+	public #{javaClassName}ServiceImpl(#{javaClassName}Mapper mapper) {
+		super(mapper);
+		this.mapper=mapper;
 	}
 
 }
