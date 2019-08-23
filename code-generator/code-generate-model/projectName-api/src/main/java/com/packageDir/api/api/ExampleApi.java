@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface ExampleApi {
 
   @RequestMapping("{path}")
-  String path(@PathVariable("path") String path);
+  Object path(@PathVariable("path") String path);
 }

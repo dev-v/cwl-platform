@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExampleController implements ExampleApi {
 
   @Override
-  public String path(String path) {
+  public Object path(String path) {
     return "例子：" + path;
   }
 }
