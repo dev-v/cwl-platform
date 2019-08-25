@@ -3,7 +3,6 @@ package com.#{packageName}.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cwl.platform.mapper.IMapper;
 import com.cwl.platform.service.AbstractService;
 import com.#{packageName}.api.entity.#{javaClassName};
 import com.#{packageName}.mapper.#{javaClassName}Mapper;

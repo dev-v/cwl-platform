@@ -2,7 +2,7 @@ package com.cwl.platform.service;
 
 import com.cwl.platform.entity.Page;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * <li>文件名称: IService.java</li>
@@ -77,7 +77,7 @@ public interface IService<E> {
    */
   int save(E e);
 
-  int saves(Collection<E> es);
+  int saves(List<E> es);
 
   /**
    * <pre>
@@ -105,7 +105,7 @@ public interface IService<E> {
    * @param keys
    * @return
    */
-  Collection<E> gets(long[] keys);
+  List<E> gets(long[] keys);
 
   /**
    * <pre>
@@ -115,7 +115,7 @@ public interface IService<E> {
    *
    * @return
    */
-  Collection<E> query(E e);
+  List<E> query(E e);
 
   /**
    * <pre>

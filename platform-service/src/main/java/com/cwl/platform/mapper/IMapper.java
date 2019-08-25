@@ -2,7 +2,7 @@ package com.cwl.platform.mapper;
 
 import com.cwl.platform.entity.Page;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * <li>文件名称: IMapper.java</li>
@@ -95,7 +95,7 @@ public interface IMapper<E> {
    * @param keys
    * @return
    */
-  Collection<E> gets(long[] keys);
+  List<E> gets(long[] keys);
 
   /**
    * 查询返回的数据只有一条
@@ -123,7 +123,7 @@ public interface IMapper<E> {
    *
    * @return
    */
-  Collection<E> query(E e);
+  List<E> query(E e);
 
   /**
    * <pre>

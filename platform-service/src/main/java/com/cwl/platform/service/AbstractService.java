@@ -4,8 +4,7 @@ import com.cwl.platform.entity.Page;
 import com.cwl.platform.mapper.IMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * <li>文件名称: AbstraService.java</li>
@@ -51,7 +50,7 @@ public abstract class AbstractService<E> implements IService<E> {
   }
 
   @Override
-  public Collection<E> gets(long[] keys) {
+  public List<E> gets(long[] keys) {
     return mapper.gets(keys);
   }
 
@@ -61,7 +60,7 @@ public abstract class AbstractService<E> implements IService<E> {
   }
 
   @Override
-  public Collection<E> query(E e) {
+  public List<E> query(E e) {
     return mapper.query(e);
   }
 
@@ -96,7 +95,7 @@ public abstract class AbstractService<E> implements IService<E> {
 
   @Transactional
   @Override
-  public int saves(Collection<E> es) {
+  public int saves(List<E> es) {
     int count = 0;
     for (E e : es) {
       save(e);
