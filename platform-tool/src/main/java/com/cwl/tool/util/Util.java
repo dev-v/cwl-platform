@@ -151,9 +151,9 @@ public class Util {
   }
 
   public static final int getYMD(Calendar calendar) {
-    int ymd = calendar.get(Calendar.YEAR) * 10000;
-    ymd += calendar.get(Calendar.MONTH) * 100;
-    return ymd + calendar.get(Calendar.DAY_OF_MONTH);
+    return calendar.get(Calendar.YEAR) * 10000 +
+            (calendar.get(Calendar.MONTH) + 1) * 100 +
+            calendar.get(Calendar.DAY_OF_MONTH);
   }
 
   /**
