@@ -17,7 +17,8 @@
   </insert>
 
   <delete id="del">
-    DELETE FROM #{tableName}
+    DELETE
+    FROM #{tableName}
     WHERE id = #{id}
   </delete>
 
@@ -106,13 +107,12 @@
 
 
   <sql id="maxLimit">
-    limit 1000
+    limit 30000
   </sql>
 
   <sql id="queryList">
     SELECT #{queryList}
-    FROM
-      #{tableName}
+    FROM #{tableName}
   </sql>
 
   <sql id="where">
