@@ -126,7 +126,7 @@ public interface IService<E> {
    * @param e
    * @return
    */
-  void queryPage(Page<E> e);
+  List<E> queryPage(Page<E> e);
 
   /**
    * <pre>

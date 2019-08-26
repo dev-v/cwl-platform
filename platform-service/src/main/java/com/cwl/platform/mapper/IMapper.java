@@ -134,7 +134,7 @@ public interface IMapper<E> {
    * @param e
    * @return
    */
-  void queryPage(Page<E> e);
+  List<E> queryPage(Page<E> e);
 
   /**
    * 根据查询条件判断有无对应数据，若有返回1，否则返回null

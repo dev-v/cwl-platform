@@ -55,8 +55,8 @@ public abstract class AbstractService<E> implements IService<E> {
   }
 
   @Override
-  public void queryPage(Page<E> page) {
-    mapper.queryPage(page);
+  public List<E> queryPage(Page<E> page) {
+    return mapper.queryPage(page);
   }
 
   @Override

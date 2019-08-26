@@ -15,30 +15,30 @@ import org.apache.commons.collections.map.LRUMap;
  */
 public class CacheCount {
 
-    private static final LRUMap CACHE_MAP = new LRUMap(10000);
+  private static final LRUMap CACHE_MAP = new LRUMap(10000);
 
-    /**
-     * <pre>
-     * 若沒有緩存 返回 -1
-     * </pre>
-     *
-     * @param key
-     * @return
-     */
-    public static final long getCacheCount(String key) {
-        Long count = (Long) CACHE_MAP.get(key);
-        if (count == null) {
-            return -1;
-        } else {
-            return count;
-        }
+  /**
+   * <pre>
+   * 若沒有緩存 返回 -1
+   * </pre>
+   *
+   * @param key
+   * @return
+   */
+  public static final int getCacheCount(String key) {
+    Integer count = (Integer) CACHE_MAP.get(key);
+    if (count == null) {
+      return -1;
+    } else {
+      return count;
     }
+  }
 
-    public static final void cacheCount(String key, Page<?> page) {
-        if (page.getAllPage() > 2) {
-            CACHE_MAP.put(key, page.getCount());
-        } else {
-            CACHE_MAP.remove(key);
-        }
+  public static final void cacheCount(String key, Page<?> page) {
+    if (page.getAllPage() > 2) {
+      CACHE_MAP.put(key, page.getCount());
+    } else {
+      CACHE_MAP.remove(key);
     }
+  }
 }
