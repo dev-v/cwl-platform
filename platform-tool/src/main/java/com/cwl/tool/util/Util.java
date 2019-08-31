@@ -9,17 +9,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.BeanUtils;
 
 /**
  * <li>文件名称: Util.java</li>
@@ -154,6 +153,13 @@ public class Util {
     return calendar.get(Calendar.YEAR) * 10000 +
             (calendar.get(Calendar.MONTH) + 1) * 100 +
             calendar.get(Calendar.DAY_OF_MONTH);
+  }
+
+  public static final int addYmdDays(int ymd, int days) {
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(ymd / 10000, ymd % 10000 / 100 - 1, ymd % 100, 0, 0, 0);
+    calendar.add(Calendar.DAY_OF_MONTH, days);
+    return getYMD(calendar);
   }
 
   /**
@@ -390,4 +396,21 @@ public class Util {
     return b;
   }
 
+  public static final <T> T copy(T source) {
+    if (source == null) {
+      return null;
+    }
+
+    try {
+      T t = (T) source.getClass().newInstance();
+      BeanUtils.copyProperties(source, t);
+      return t;
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+
+    return null;
+  }
 }

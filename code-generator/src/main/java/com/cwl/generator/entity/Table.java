@@ -117,7 +117,7 @@ public class Table {
     StringBuilder part1 = new StringBuilder("<trim suffixOverrides=\",\">\r\n");
     StringBuilder part2 = new StringBuilder("<trim suffixOverrides=\",\">\r\n");
     for (Column column : getAllColumn()) {
-      if (!column.isAutoGenerator()) {
+      if (!column.isAutoGenerator() || column.isPrimaryKey()) {
         part1.append("			<if test=\"").append(column.getJavaName()).append("!=null\">\r\n				")
                 .append(column.getColumnName())
                 .append(",\r\n			</if>\r\n");

@@ -16,6 +16,25 @@
     <include refid="insertList"></include>
   </insert>
 
+  <insert id="save" useGeneratedKeys="true" keyProperty="id">
+    <!-- 不包含数据库类型为TIMESTAMP（由数据库自动管理）的列 -->
+    insert into #{tableName}
+    <include refid="insertList"></include>
+    ON DUPLICATE KEY
+    UPDATE
+    <trim suffixOverrides=",">
+      #{saveOnDuplicateSet}
+    </trim>
+  </insert>
+
+  <update id="update">
+    update #{tableName}
+    <set>
+      #{updateSet}
+    </set>
+    where id = #{id}
+  </update>
+
   <delete id="del">
     DELETE
     FROM #{tableName}
@@ -34,27 +53,6 @@
     delete from #{tableName}
     <include refid="where"></include>
   </delete>
-
-
-  <update id="update">
-    update #{tableName}
-    <set>
-      #{updateSet}
-    </set>
-    where id = #{id}
-  </update>
-
-  <insert id="save" useGeneratedKeys="true" keyProperty="id">
-    <!-- 不包含数据库类型为TIMESTAMP（由数据库自动管理）的列 -->
-    insert into #{tableName}
-    <include refid="insertList"></include>
-    ON DUPLICATE KEY
-    UPDATE
-    <trim suffixOverrides=",">
-      #{saveOnDuplicateSet}
-    </trim>
-  </insert>
-
 
   <select id="get" resultType="#{javaClassName}">
     SELECT *

@@ -13,28 +13,28 @@ import java.util.Map;
  * @since 2018/1/15
  */
 public class KeyGeneratorUtil {
-    private static final Map<Class<?>, String> clz_keys = new HashMap<>();
+  private static final Map<Class<?>, String> clz_keys = new HashMap<>();
 
-    public static final String getClzKey(Class<?> clz) {
-        String key = clz_keys.get(clz);
-        if (key == null) {
-            if (Util.isPremitive(clz)) {
-                char c = clz.getSimpleName().charAt(0);
-                key = "j" + (clz.isPrimitive() ? Character.toUpperCase(c) : c);
-                clz_keys.put(clz, key);
-            } else {
-                String[] names = clz.getName().split("\\.");
-                int length = names.length - 1;
-                key = names[length];
-                for (int i = 0; i < length; i++) {
-                    key += names[i].charAt(0);
-                }
-            }
+  public static final String getClzKey(Class<?> clz) {
+    String key = clz_keys.get(clz);
+    if (key == null) {
+      if (Util.isPremitive(clz)) {
+        char c = clz.getSimpleName().charAt(0);
+        key = "j" + (clz.isPrimitive() ? Character.toUpperCase(c) : c);
+        clz_keys.put(clz, key);
+      } else {
+        String[] names = clz.getName().split("\\.");
+        int length = names.length - 1;
+        key = names[length];
+        for (int i = 0; i < length; i++) {
+          key += names[i].charAt(0);
         }
-        return key;
+      }
     }
+    return key;
+  }
 
-    public static final <T> String generateKey(String key, Class<T> clz) {
-        return key + getClzKey(clz);
-    }
+  public static final <T> String generateKey(Object key, Class<T> clz) {
+    return key + getClzKey(clz);
+  }
 }

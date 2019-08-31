@@ -4,6 +4,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.cwl.tool.cache.AbstractCacheService;
 import com.cwl.tool.cache.ICacheService;
 import com.cwl.tool.util.KeyGeneratorUtil;
 import com.cwl.tool.util.Util;
@@ -25,110 +26,107 @@ import com.alibaba.fastjson.util.TypeUtils;
  * <li>修改记录: ...</li>
  * <li>内容摘要: ...</li>
  * <li>其他说明: ...</li>
- * 
+ *
+ * @author dev-v
  * @version 1.0
  * @since 2017年12月23日
- * @author dev-v
  */
-public class RedisCacheService implements ICacheService {
-	private static final Log LOG = LogFactory.getLog(RedisCacheService.class);
+public class RedisCacheService extends AbstractCacheService {
+  private static final Log LOG = LogFactory.getLog(RedisCacheService.class);
 
-	private RedisConnectionFactory connectionFactory;
+  private RedisConnectionFactory connectionFactory;
 
-	private StringRedisTemplate stringTemplate;
+  private StringRedisTemplate stringTemplate;
 
-	/**
-	 * 基础类型及其包装类、字符序列、集合操作
-	 */
-	private ValueOperations<String, String> baseOperations;
+  /**
+   * 基础类型及其包装类、字符序列、集合操作
+   */
+  private ValueOperations<String, String> baseOperations;
 
-	private Map<Class<?>, ObjectMap> object_map = new HashMap<>();
+  private Map<Class<?>, ObjectMap> object_map = new HashMap<>();
 
-	public RedisCacheService(RedisConnectionFactory connectionFactory) {
-		this.connectionFactory = connectionFactory;
+  public RedisCacheService(RedisConnectionFactory connectionFactory) {
+    this.connectionFactory = connectionFactory;
 
-		this.stringTemplate = new StringRedisTemplate(connectionFactory);
+    this.stringTemplate = new StringRedisTemplate(connectionFactory);
 
-		baseOperations = stringTemplate.opsForValue();
-	}
+    baseOperations = stringTemplate.opsForValue();
+  }
 
-	@Override
-	public void put(String key, Object object) {
-		String val = Util.isPremitive(object.getClass()) ? object.toString() : JSON.toJSONString(object);
-		baseOperations.set(KeyGeneratorUtil.generateKey(key, object.getClass()), val);
-	}
+  @Override
+  public void put(Object key, Object object) {
+    String val = Util.isPremitive(object.getClass()) ? object.toString() : JSON.toJSONString(object);
+    baseOperations.set(key instanceof Number ? key.toString() : KeyGeneratorUtil.generateKey(key, object.getClass()), val);
+  }
 
-	@Override
-	public <T> T get(String key, Class<T> clz) {
-		String val = baseOperations.get(KeyGeneratorUtil.generateKey(key, clz));
-		if (val != null) {
-			return TypeUtils.cast(val, clz, ParserConfig.global);
-		}
-		return null;
-	}
+  @Override
+  public <T> T get(Object key, Class<T> clz) {
+    if (key instanceof Number) {
+      ObjectMap map = object_map.get(clz);
+      if (map == null) {
+        map = generateObjectMap(clz);
+      }
 
-	@Override
-	public void put(Object object) {
-		ObjectMap map = object_map.get(object.getClass());
-		if (map == null) {
-			map = generateObjectMap(object.getClass());
-		}
-		long id;
-		try {
-			id = map.idField.getLong(object);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			LOG.error(e);
-			throw new IllegalArgumentException("字段id必须为整形，且必须赋值，该字段值用于唯一标志对象！", e);
-		}
-		map.redisMap.put(id, object);
-	}
+      Object object = map.redisMap.get(key);
+      if (object != null) {
+        return TypeUtils.castToJavaBean(object, clz);
+      }
+    }
 
-	private <T> ObjectMap generateObjectMap(Class<T> clz) {
-		ObjectMap map = new ObjectMap();
+    String val = baseOperations.get(KeyGeneratorUtil.generateKey(key, clz));
+    if (val != null) {
+      return TypeUtils.cast(val, clz, ParserConfig.global);
+    }
+    return null;
+  }
 
-		try {
-			map.idField = clz.getField("id");
-		} catch (NoSuchFieldException | SecurityException e) {
-			LOG.error(e);
-			throw new IllegalArgumentException("存储的对象必须具有id字段属性，区分大小写！", e);
-		}
+  @Override
+  public void put(Object object) {
+    ObjectMap map = object_map.get(object.getClass());
+    if (map == null) {
+      map = generateObjectMap(object.getClass());
+    }
+    long id;
+    try {
+      id = map.idField.getLong(object);
+    } catch (IllegalArgumentException | IllegalAccessException e) {
+      LOG.error(e);
+      throw new IllegalArgumentException("字段id必须为整形，且必须赋值，该字段值用于唯一标志对象！", e);
+    }
+    map.redisMap.put(id, object);
+  }
 
-		map.redisMap = new DefaultRedisMap<>(stringTemplate.boundHashOps(KeyGeneratorUtil.getClzKey(clz)));
-		object_map.put(clz, map);
+  private <T> ObjectMap generateObjectMap(Class<T> clz) {
+    ObjectMap map = new ObjectMap();
 
-		return map;
-	}
+    try {
+      map.idField = clz.getField("id");
+    } catch (NoSuchFieldException | SecurityException e) {
+      LOG.error(e);
+      throw new IllegalArgumentException("存储的对象必须具有id字段属性，区分大小写！", e);
+    }
 
-	@Override
-	public <T> T get(Long id, Class<T> clz) {
-		ObjectMap map = object_map.get(clz);
-		if (map == null) {
-			map = generateObjectMap(clz);
-		}
+    map.redisMap = new DefaultRedisMap<>(stringTemplate.boundHashOps(KeyGeneratorUtil.getClzKey(clz)));
+    object_map.put(clz, map);
 
-		Object object = map.redisMap.get(id);
-		if (object != null) {
-			return TypeUtils.castToJavaBean(object, clz);
-		}
+    return map;
+  }
 
-		return null;
-	}
+  private Map<Class<?>, RedisTemplate<String, ?>> dqueue_template = new HashMap<>();
 
-	private Map<Class<?>, RedisTemplate<String, ?>> dqueue_template = new HashMap<>();
+  @SuppressWarnings("unchecked")
+  @Override
+  public <T> Deque<T> getDeque(String key, Class<T> clz, int maxSize) {
+    RedisTemplate<String, T> template = (RedisTemplate<String, T>) dqueue_template.get(clz);
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> Deque<T> getDeque(String key, Class<T> clz, int maxSize) {
-		RedisTemplate<String, T> template = (RedisTemplate<String, T>) dqueue_template.get(clz);
+    if (template == null) {
+      template = new RedisTemplate<>();
+      template.setConnectionFactory(connectionFactory);
+      dqueue_template.put(clz, template);
+    }
 
-		if (template == null) {
-			template = new RedisTemplate<>();
-			template.setConnectionFactory(connectionFactory);
-			dqueue_template.put(clz, template);
-		}
+    DefaultRedisList<T> list = new DefaultRedisList<>(template.boundListOps(key), maxSize);
 
-		DefaultRedisList<T> list = new DefaultRedisList<>(template.boundListOps(key), maxSize);
-
-		return list;
-	}
+    return list;
+  }
 }
