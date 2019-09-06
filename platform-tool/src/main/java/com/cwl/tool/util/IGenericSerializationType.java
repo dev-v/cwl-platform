@@ -2,6 +2,7 @@ package com.cwl.tool.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.beans.BeanUtils;
 
 /**
  * <pre>
@@ -11,7 +12,7 @@ import com.alibaba.fastjson.JSONObject;
  * @author chenwl 2019-08-30
  */
 public interface IGenericSerializationType {
-  String FIELD_NAME = "deserializationType";
+  String FIELD_NAME = "zDeserializationType";
 
   static Object toObject(Object object) throws ClassNotFoundException {
     if (object == null) {
@@ -21,7 +22,8 @@ public interface IGenericSerializationType {
     } else if (object instanceof JSONObject) {
       return JSON.parseObject(((JSONObject) object).toJSONString(), Class.forName(((JSONObject) object).getString(FIELD_NAME)));
     } else if (object instanceof String) {
-      return JSON.parseObject((String) object, Class.forName(JSON.parseObject((String) object).getString(FIELD_NAME)));
+      JSONObject json = JSON.parseObject((String) object);
+      return json.toJavaObject(Class.forName(json.getString(FIELD_NAME)));
     } else {
       throw new UnsupportedOperationException();
     }
@@ -32,5 +34,5 @@ public interface IGenericSerializationType {
    *
    * @return
    */
-  Class getDeserializationType();
+  Class getZDeserializationType();
 }

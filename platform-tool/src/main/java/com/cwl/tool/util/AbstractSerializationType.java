@@ -13,7 +13,7 @@ public class AbstractSerializationType implements IGenericSerializationType {
    *
    * @return
    */
-  public Class<?> getDeserializationType() {
+  public Class<?> getZDeserializationType() {
     return this.getClass();
   }
 }
