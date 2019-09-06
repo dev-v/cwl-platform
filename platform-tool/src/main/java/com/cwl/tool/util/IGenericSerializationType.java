@@ -14,16 +14,16 @@ import org.springframework.beans.BeanUtils;
 public interface IGenericSerializationType {
   String FIELD_NAME = "zDeserializationType";
 
-  static Object toObject(Object object) throws ClassNotFoundException {
+  static <E extends IGenericSerializationType> E toObject(Object object) throws ClassNotFoundException {
     if (object == null) {
       return null;
     } else if (object instanceof IGenericSerializationType) {
-      return object;
+      return (E) object;
     } else if (object instanceof JSONObject) {
-      return JSON.parseObject(((JSONObject) object).toJSONString(), Class.forName(((JSONObject) object).getString(FIELD_NAME)));
+      return (E) JSON.parseObject(((JSONObject) object).toJSONString(), Class.forName(((JSONObject) object).getString(FIELD_NAME)));
     } else if (object instanceof String) {
       JSONObject json = JSON.parseObject((String) object);
-      return json.toJavaObject(Class.forName(json.getString(FIELD_NAME)));
+      return (E) json.toJavaObject(Class.forName(json.getString(FIELD_NAME)));
     } else {
       throw new UnsupportedOperationException();
     }
