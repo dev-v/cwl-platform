@@ -1,5 +1,5 @@
 dependencies {
-  compile("com.cwl:platform-service:${version}")
+  compile project(":platform-service")
   testCompile 'junit:junit:4.12',
           "org.springframework:spring-test",
           "org.springframework.boot:spring-boot-test"

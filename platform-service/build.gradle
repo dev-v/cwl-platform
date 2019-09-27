@@ -11,7 +11,7 @@ dependencies {
   compile('org.springframework.boot:spring-boot-starter-actuator')
   compile('org.springframework.boot:spring-boot-starter-web')
 
-  compile("com.cwl:platform-tool:${version}")
+  compile project(":platform-tool")
   compile project(":platform-api")
   testCompile('org.springframework.boot:spring-boot-starter-test')
 }
