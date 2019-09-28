@@ -1,7 +1,4 @@
-//
-bootRepackage {
-  enabled = false
-}
+jar.enabled = true
 
 dependencies {
   compile('redis.clients:jedis:2.9.0')

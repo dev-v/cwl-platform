@@ -1,5 +1,7 @@
+jar.enabled = true
+
 dependencies {
-  compile project(":platform-service")
+  implementation project(":platform-service")
   testCompile 'junit:junit:4.12',
           "org.springframework:spring-test",
           "org.springframework.boot:spring-boot-test"
