@@ -2,6 +2,8 @@ package com.cwl.tool.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
 
 /**
@@ -13,17 +15,28 @@ import org.springframework.beans.BeanUtils;
  */
 public interface IGenericSerializationType {
   String FIELD_NAME = "zDeserializationType";
+  Log log = LogFactory.getLog(IGenericSerializationType.class);
 
-  static <E extends IGenericSerializationType> E toObject(Object object) throws ClassNotFoundException {
+  static <E extends IGenericSerializationType> E toObject(Object object) {
     if (object == null) {
       return null;
     } else if (object instanceof IGenericSerializationType) {
       return (E) object;
     } else if (object instanceof JSONObject) {
-      return (E) JSON.parseObject(((JSONObject) object).toJSONString(), Class.forName(((JSONObject) object).getString(FIELD_NAME)));
+      try {
+        return (E) JSON.parseObject(((JSONObject) object).toJSONString(), Class.forName(((JSONObject) object).getString(FIELD_NAME)));
+      } catch (Exception e) {
+        log.error(e);
+        return null;
+      }
     } else if (object instanceof String) {
       JSONObject json = JSON.parseObject((String) object);
-      return (E) json.toJavaObject(Class.forName(json.getString(FIELD_NAME)));
+      try {
+        return (E) json.toJavaObject(Class.forName(json.getString(FIELD_NAME)));
+      } catch (Exception e) {
+        log.error(e);
+        return null;
+      }
     } else {
       throw new UnsupportedOperationException();
     }
