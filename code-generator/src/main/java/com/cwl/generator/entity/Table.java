@@ -1,6 +1,7 @@
 package com.cwl.generator.entity;
 
 import com.cwl.tool.util.Util;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,11 @@ public class Table {
 
   StringBuilder where = new StringBuilder();
 
+  StringBuilder whereId = new StringBuilder();
+
+  @Getter
+  StringBuilder primaryColumnList = new StringBuilder();
+
   public void setColumns(List<Column> columns) {
     this.columns = columns;
     for (Column column : columns) {
@@ -61,6 +67,8 @@ public class Table {
     setInsertList();
     setUpdateSet();
     setWhere();
+    setWhereId();
+    setPrimaryColumnList();
   }
 
   private void setWhere() {
@@ -72,6 +80,27 @@ public class Table {
       }
     } catch (Exception e) {
       System.out.println(this.getTableName());
+    }
+  }
+
+  public void setPrimaryColumnList() {
+    for (Column column : getPrimaryColumns()) {
+      primaryColumnList.append(column.columnName).append(',');
+    }
+    primaryColumnList.setLength(primaryColumnList.length() - 1);
+  }
+
+  private void setWhereId() {
+    List<Column> primaryColumns = getPrimaryColumns();
+    if (primaryColumns.size() == 1) {
+      Column column = primaryColumns.get(0);
+      whereId.append(column.columnName).append("=#{").append(column.getJavaName()).append('}');
+    } else {
+      for (Column column : primaryColumns) {
+        whereId.append("			<if test=\"").append(column.getJavaName())
+                .append(" != null\">\r\n				AND ").append(column.getColumnName()).append("=#{")
+                .append(column.getJavaName()).append("}\r\n			</if>\r\n");
+      }
     }
   }
 
@@ -140,6 +169,10 @@ public class Table {
 
   public String getWhere() {
     return where.toString();
+  }
+
+  public String getWhereId() {
+    return whereId.toString();
   }
 
   public String getQueryList() {

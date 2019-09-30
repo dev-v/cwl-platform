@@ -107,8 +107,10 @@ public class ProjectGenerator {
               .replaceAll("#\\{insertList\\}", table.getInsertList())
               .replaceAll("#\\{updateSet\\}", table.getUpdateSet())
               .replaceAll("#\\{saveOnDuplicateSet\\}", table.getSaveOnDuplicateSet())
-              .replaceAll("#\\{queryList\\}", table.getQueryList()).replaceAll("#\\{where\\}", table.getWhere());
-
+              .replaceAll("#\\{queryList\\}", table.getQueryList())
+              .replaceAll("#\\{where\\}", table.getWhere())
+              .replaceAll("#\\{whereId\\}", table.getWhereId())
+              .replaceAll("#\\{primaryColumnList\\}", table.getPrimaryColumnList().toString());
       // 写出文件
       Util.writeFileContent(fileName, newContent);
     }

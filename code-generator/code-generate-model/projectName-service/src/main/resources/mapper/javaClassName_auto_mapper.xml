@@ -32,17 +32,17 @@
     <set>
       #{updateSet}
     </set>
-    where id = #{id}
+    <include refid="whereId"></include>
   </update>
 
   <delete id="del">
     DELETE
     FROM #{tableName}
-    WHERE id = #{id}
+    <include refid="whereId"></include>
   </delete>
 
   <delete id="dels">
-    delete from #{tableName} where id in
+    delete from #{tableName} where #{primaryColumnList} in
     <foreach item="item" index="index" collection="array" open="("
              separator="," close=")">#{item}
     </foreach>
@@ -57,11 +57,11 @@
   <select id="get" resultType="#{javaClassName}">
     SELECT *
     FROM #{tableName}
-    WHERE id = #{id}
+    <include refid="whereId"></include>
   </select>
 
   <select id="gets" resultType="#{javaClassName}">
-    SELECT * FROM #{tableName} WHERE id IN
+    SELECT * FROM #{tableName} WHERE #{primaryColumnList} IN
     <foreach item="item" index="index" collection="array" open="("
              separator="," close=")">#{item}
     </foreach>
@@ -74,7 +74,7 @@
   </select>
 
   <select id="getIds" resultType="long">
-    select id from #{tableName}
+    select #{primaryColumnList} from #{tableName}
     <include refid="where"></include>
     <include refid="maxLimit"></include>
   </select>
@@ -111,6 +111,12 @@
   <sql id="queryList">
     SELECT #{queryList}
     FROM #{tableName}
+  </sql>
+
+  <sql id="whereId">
+    <trim prefix="WHERE" prefixOverrides="AND">
+      #{whereId}
+    </trim>
   </sql>
 
   <sql id="where">
