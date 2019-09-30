@@ -23,6 +23,18 @@ public class AbstractController<T, S extends IService<T>> {
     this.service = service;
   }
 
+  /**
+   * <pre>
+   * 若一定要使用 请务必加上limit字句
+   * </pre>
+   *
+   * @return
+   */
+  @RequestMapping
+  public List<T> query(T data) {
+    return service.query(data);
+  }
+
   @RequestMapping("/{key}")
   public T get(@PathVariable("key") Serializable id) {
     return service.get(id);
@@ -37,19 +49,6 @@ public class AbstractController<T, S extends IService<T>> {
   @RequestMapping("/getByCondition")
   public T getByCondition(T data) {
     return service.getByCondition(data);
-  }
-
-  /**
-   * <pre>
-   * 不建议使用
-   * 若一定要使用 请务必加上limit字句
-   * </pre>
-   *
-   * @return
-   */
-  @RequestMapping("/query")
-  public List<T> query(T data) {
-    return service.query(data);
   }
 
   /**
