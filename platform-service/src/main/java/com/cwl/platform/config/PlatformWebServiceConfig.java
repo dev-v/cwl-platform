@@ -44,14 +44,14 @@ public class PlatformWebServiceConfig extends WebMvcConfigurationSupport {
 
   @Override
   protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-    addDefaultHttpMessageConverters(converters);
-    for (HttpMessageConverter converter : converters) {
-      if (converter instanceof StringHttpMessageConverter) {
-        converters.remove(converter);
-        break;
-      }
-    }
-    converters.add(new StringHttpMessageConverter(Charset.forName("utf-8")));
+//    addDefaultHttpMessageConverters(converters);
+//    for (HttpMessageConverter converter : converters) {
+//      if (converter instanceof StringHttpMessageConverter) {
+//        converters.remove(converter);
+//        break;
+//      }
+//    }
+//    converters.add(new StringHttpMessageConverter(Charset.forName("utf-8")));
 
     converters.add(fastJsonHttpMessageConverter());
   }
