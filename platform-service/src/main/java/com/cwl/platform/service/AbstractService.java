@@ -17,11 +17,11 @@ import java.util.List;
  * @version 1.0
  * @since 2017年12月19日
  */
-public abstract class AbstractService<E> implements IService<E> {
+public abstract class AbstractService<E, M extends IMapper<E>> implements IService<E> {
 
-  protected IMapper<E> mapper;
+  protected M mapper;
 
-  protected AbstractService(IMapper<E> mapper) {
+  protected AbstractService(M mapper) {
     this.mapper = mapper;
   }
 

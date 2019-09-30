@@ -1,6 +1,7 @@
 package com.cwl.platform.service;
 
 import com.cwl.platform.entity.Page;
+import com.cwl.platform.mapper.IMapper;
 
 import java.io.Serializable;
 import java.util.List;

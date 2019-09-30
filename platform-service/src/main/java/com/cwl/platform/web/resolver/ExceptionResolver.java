@@ -1,4 +1,4 @@
-package com.cwl.platform.resolver;
+package com.cwl.platform.web.resolver;
 
 import java.util.Map;
 

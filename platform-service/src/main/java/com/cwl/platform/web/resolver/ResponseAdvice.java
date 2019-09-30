@@ -1,4 +1,4 @@
-package com.cwl.platform.resolver;
+package com.cwl.platform.web.resolver;
 
 import com.cwl.platform.entity.Response;
 import org.springframework.core.MethodParameter;

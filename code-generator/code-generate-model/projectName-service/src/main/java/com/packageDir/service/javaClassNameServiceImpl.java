@@ -18,14 +18,11 @@ import com.#{packageName}.mapper.#{javaClassName}Mapper;
  * @author dev-v
  */
 @Service
-public class #{javaClassName}ServiceImpl extends AbstractService<#{javaClassName}> implements #{javaClassName}Service {
-
-	private #{javaClassName}Mapper mapper;
+public class #{javaClassName}ServiceImpl extends AbstractService<#{javaClassName},#{javaClassName}Mapper> implements #{javaClassName}Service {
 
 	@Autowired
 	public #{javaClassName}ServiceImpl(#{javaClassName}Mapper mapper) {
 		super(mapper);
-		this.mapper=mapper;
 	}
 
 }
