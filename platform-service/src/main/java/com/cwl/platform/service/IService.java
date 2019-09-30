@@ -2,6 +2,7 @@ package com.cwl.platform.service;
 
 import com.cwl.platform.entity.Page;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public interface IService<E> {
    * @param key
    * @return 删除成功行数
    */
-  int del(long key);
+  int del(Serializable key);
 
   /**
    * <pre>
@@ -87,7 +88,7 @@ public interface IService<E> {
    * @param key
    * @return
    */
-  E get(long key);
+  E get(Serializable key);
 
   /**
    * 查询返回的数据只有一条

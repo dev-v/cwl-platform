@@ -4,6 +4,7 @@ import com.cwl.platform.entity.Page;
 import com.cwl.platform.mapper.IMapper;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public abstract class AbstractService<E> implements IService<E> {
   }
 
   @Override
-  public int del(long key) {
+  public int del(Serializable key) {
     return mapper.del(key);
   }
 
@@ -45,7 +46,7 @@ public abstract class AbstractService<E> implements IService<E> {
   }
 
   @Override
-  public E get(long key) {
+  public E get(Serializable key) {
     return mapper.get(key);
   }
 

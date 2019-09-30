@@ -2,6 +2,7 @@ package com.cwl.platform.mapper;
 
 import com.cwl.platform.entity.Page;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public interface IMapper<E> {
    * @param key
    * @return 删除成功行数
    */
-  int del(long key);
+  int del(Serializable key);
 
   /**
    * <pre>
@@ -85,7 +86,7 @@ public interface IMapper<E> {
    * @param key
    * @return
    */
-  E get(long key);
+  E get(Serializable key);
 
   /**
    * <pre>
