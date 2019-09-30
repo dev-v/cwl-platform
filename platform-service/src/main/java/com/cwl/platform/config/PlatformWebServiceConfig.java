@@ -7,8 +7,7 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
 import com.cwl.platform.resolver.FastJsonArgumentResolver;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -36,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
+@ComponentScan(basePackages = "com.cwl.platform.resolver")
 public class PlatformWebServiceConfig extends WebMvcConfigurationSupport {
   static {
     JSON.DEFAULT_PARSER_FEATURE |= SerializerFeature.WriteDateUseDateFormat.getMask();
