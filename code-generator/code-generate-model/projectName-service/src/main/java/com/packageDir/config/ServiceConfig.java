@@ -7,6 +7,7 @@ import com.cwl.tool.config.JdbcPoolConfig;
 import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -61,6 +62,7 @@ public class #{projectJavaName}ServiceConfig {
 	public org.apache.ibatis.session.Configuration #{projectName}MybatisConfiguration() {
 		org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
 		configuration.setMapUnderscoreToCamelCase(true);
+		configuration.setVfsImpl(SpringBootVFS.class);
 		configuration.getTypeAliasRegistry().registerAliases("com.#{packageName}.api.entity");
 		return configuration;
 	}
