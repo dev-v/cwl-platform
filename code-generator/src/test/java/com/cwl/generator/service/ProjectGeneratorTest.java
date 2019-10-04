@@ -86,7 +86,7 @@ public class ProjectGeneratorTest {
 
   @Test
   public void test_stock() {
-    generator.createProject(new Project(modelPath, projectDir, "stock", "stock", "cwl.stock"));
+    generator.createProject(new Project(modelPath, projectDir, "stock", "stock", "cwl.stock", 2049));
   }
 
 }

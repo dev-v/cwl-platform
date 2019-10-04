@@ -3,6 +3,7 @@ package com.cwl.tool.cache;
 import org.apache.commons.collections.map.LRUMap;
 
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * <pre>
@@ -20,8 +21,10 @@ public class LocalCache extends AbstractCacheService {
   }
 
   public LocalCache() {
-    caches = new LRUMap(30_000);
+    caches = new LRUMap(100_000);
   }
+
+  private ReentrantLock lock = new ReentrantLock();
 
   @Override
   public void put(Object key, Object object) {
@@ -56,8 +59,18 @@ public class LocalCache extends AbstractCacheService {
   public <T> T get(Object key, Class<T> clz, Callable<T> callable) {
     T t = this.get(key, clz);
     if (t == null) {
-      t = callable.call();
+      t = callWithLock(key, clz, callable);
       caches.put(key, t);
+      lock.unlock();
+    }
+    return t;
+  }
+
+  private <T> T callWithLock(Object key, Class<T> clz, Callable<T> callable) {
+    lock.lock();
+    T t = this.get(key, clz);
+    if (t == null) {
+      t = callable.call();
     }
     return t;
   }
@@ -66,10 +79,11 @@ public class LocalCache extends AbstractCacheService {
   public <T> T get(Object key, Class<T> clz, Callable<T> callable, int expireSeconds) {
     T t = this.get(key, clz);
     if (t == null) {
-      t = callable.call();
+      t = callWithLock(key, clz, callable);
       if (t != null) {
         caches.put(key, ExpireObject.newInstance(t, expireSeconds));
       }
+      lock.unlock();
     }
     return t;
   }

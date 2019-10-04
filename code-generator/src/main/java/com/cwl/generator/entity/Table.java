@@ -2,6 +2,7 @@ package com.cwl.generator.entity;
 
 import com.cwl.tool.util.Util;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,9 @@ public class Table {
 
   StringBuilder whereId = new StringBuilder();
 
+  @Setter
+  Project project;
+
   @Getter
   StringBuilder primaryColumnList = new StringBuilder();
 
@@ -57,7 +61,7 @@ public class Table {
         this.otherColumns.add(column);
       }
 
-      if (column.getCharacterMaximumLength() == null || column.getCharacterMaximumLength() < 101) {
+      if (column.getCharacterMaximumLength() == null || column.getCharacterMaximumLength() < project.getMaxCharacterCount()) {
         queryList.append(column.getColumnName()).append(',');
       }
 

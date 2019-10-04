@@ -35,12 +35,26 @@ public class Project {
 
   List<ModelFile> modelFiles;
 
-  public Project(String modelPath, String projectDir, String dbSchemaName, String projectName, String packageName) {
+  int maxCharacterCount;
+
+  public void setTables(List<Table> tables) {
+    for (Table table : tables) {
+      table.setProject(this);
+    }
+    this.tables = tables;
+  }
+
+  public Project(String modelPath, String projectDir, String dbSchemaName, String projectName, String packageName, int maxCharacterCount) {
     this.modelPath = modelPath;
     this.projectDir = projectDir;
     this.dbSchemaName = dbSchemaName;
     this.projectName = projectName;
     this.packageName = packageName;
+    this.maxCharacterCount = maxCharacterCount;
+  }
+
+  public Project(String modelPath, String projectDir, String dbSchemaName, String projectName, String packageName) {
+    this(modelPath, projectDir, dbSchemaName, projectName, packageName, 101);
   }
 
   public String getJavaName() {

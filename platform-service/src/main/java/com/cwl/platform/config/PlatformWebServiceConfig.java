@@ -8,10 +8,12 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
 import com.cwl.platform.web.resolver.FastJsonArgumentResolver;
 import org.springframework.context.annotation.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.method.annotation.RequestParamMapMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -52,6 +54,23 @@ public class PlatformWebServiceConfig extends WebMvcConfigurationSupport {
 //    converters.add(new StringHttpMessageConverter(Charset.forName("utf-8")));
 
     converters.add(fastJsonHttpMessageConverter());
+  }
+
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+            .allowedOrigins("http://localhost:8000",
+                    "http://localhost:8001",
+                    "http://localhost:8002",
+                    "http://127.0.0.1:8000",
+                    "http://localhost:3000",
+                    "http://127.0.0.1:3000",
+                    "http://127.0.0.1:8001",
+                    "http://127.0.0.1:8002")
+            .allowCredentials(true)
+            .allowedHeaders("*")
+            .exposedHeaders(HttpHeaders.SET_COOKIE)
+            .maxAge(1800);
   }
 
   @Bean

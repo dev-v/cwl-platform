@@ -24,18 +24,16 @@ public interface IGenericSerializationType {
       return (E) object;
     } else if (object instanceof JSONObject) {
       try {
-        return (E) JSON.parseObject(((JSONObject) object).toJSONString(), Class.forName(((JSONObject) object).getString(FIELD_NAME)));
+        return (E) ((JSONObject) object).toJavaObject(Class.forName(((JSONObject) object).getString(FIELD_NAME)));
       } catch (Exception e) {
-        log.error(e);
-        return null;
+        throw new IllegalArgumentException(e);
       }
     } else if (object instanceof String) {
       JSONObject json = JSON.parseObject((String) object);
       try {
         return (E) json.toJavaObject(Class.forName(json.getString(FIELD_NAME)));
       } catch (Exception e) {
-        log.error(e);
-        return null;
+        throw new IllegalArgumentException(e);
       }
     } else {
       throw new UnsupportedOperationException();
