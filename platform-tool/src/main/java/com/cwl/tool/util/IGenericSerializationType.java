@@ -2,9 +2,6 @@ package com.cwl.tool.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeanUtils;
 
 /**
  * <pre>
@@ -15,7 +12,6 @@ import org.springframework.beans.BeanUtils;
  */
 public interface IGenericSerializationType {
   String FIELD_NAME = "zDeserializationType";
-  Log log = LogFactory.getLog(IGenericSerializationType.class);
 
   static <E extends IGenericSerializationType> E toObject(Object object) {
     if (object == null) {
