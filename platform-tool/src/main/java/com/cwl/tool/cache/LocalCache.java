@@ -88,6 +88,11 @@ public class LocalCache extends AbstractCacheService {
     return t;
   }
 
+  @Override
+  public int size() {
+    return caches.size();
+  }
+
   static final class ExpireObject {
     //过期时间
     private long expireTime;

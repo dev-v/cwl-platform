@@ -35,4 +35,9 @@ public abstract class AbstractCacheService implements ICacheService {
   public <T> Deque<T> getDeque(String key, Class<T> clz, int maxSize) {
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public int size() {
+    throw new UnsupportedOperationException();
+  }
 }

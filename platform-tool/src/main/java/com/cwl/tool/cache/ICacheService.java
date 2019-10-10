@@ -127,4 +127,6 @@ public interface ICacheService {
   interface Callable<T> {
     T call();
   }
+
+  int size();
 }
