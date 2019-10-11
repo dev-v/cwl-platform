@@ -3,6 +3,7 @@ package com.cwl.platform.mapper;
 import com.cwl.platform.entity.Page;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -77,6 +78,8 @@ public interface IMapper<E> {
    * @return
    */
   int save(E e);
+
+  int saves(Collection<E> es);
 
   /**
    * <pre>

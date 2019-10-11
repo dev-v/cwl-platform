@@ -9,6 +9,20 @@
     )
   </sql>
 
+
+  <insert id="saves" useGeneratedKeys="true" keyProperty="id" parameterType="list">
+    <!-- 不包含数据库类型为TIMESTAMP（由数据库自动管理）的列 -->
+    insert into #{tableName}
+    (#{savesInsertList})
+    values
+    <foreach item="item" index="index" collection="list" separator=",">
+      (#{savesInsertValues})
+    </foreach>
+    ON DUPLICATE KEY
+    UPDATE
+    #{savesOnDuplicateSet}
+  </insert>
+
   <!-- 注意检查非空和主键自增属性 -->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">
     insert

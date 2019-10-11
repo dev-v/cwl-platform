@@ -94,12 +94,26 @@ public abstract class AbstractService<E, M extends IMapper<E>> implements IServi
     return mapper.count(e);
   }
 
-  @Transactional
+  private static final int maxSaveSize = 512;
+
   @Override
+  @Transactional
   public int saves(List<E> es) {
-    int count = 0;
-    for (E e : es) {
-      save(e);
+    int start = 0, end = maxSaveSize, size = es.size(), count = 0;
+    if (size > 0) {
+      do {
+        if (end >= size) {
+          if (start == 0) {
+            return mapper.saves(es);
+          }
+          count += mapper.saves(es.subList(start, size));
+          break;
+        } else {
+          count += mapper.saves(es.subList(start, end));
+          start = end;
+          end += maxSaveSize;
+        }
+      } while (true);
     }
     return count;
   }

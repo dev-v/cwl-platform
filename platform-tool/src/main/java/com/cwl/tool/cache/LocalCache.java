@@ -59,9 +59,12 @@ public class LocalCache extends AbstractCacheService {
   public <T> T get(Object key, Class<T> clz, Callable<T> callable) {
     T t = this.get(key, clz);
     if (t == null) {
-      t = callWithLock(key, clz, callable);
-      caches.put(key, t);
-      lock.unlock();
+      try {
+        t = callWithLock(key, clz, callable);
+        caches.put(key, t);
+      } finally {
+        lock.unlock();
+      }
     }
     return t;
   }
@@ -79,11 +82,14 @@ public class LocalCache extends AbstractCacheService {
   public <T> T get(Object key, Class<T> clz, Callable<T> callable, int expireSeconds) {
     T t = this.get(key, clz);
     if (t == null) {
-      t = callWithLock(key, clz, callable);
-      if (t != null) {
-        caches.put(key, ExpireObject.newInstance(t, expireSeconds));
+      try {
+        t = callWithLock(key, clz, callable);
+        if (t != null) {
+          caches.put(key, ExpireObject.newInstance(t, expireSeconds));
+        }
+      } finally {
+        lock.unlock();
       }
-      lock.unlock();
     }
     return t;
   }

@@ -34,9 +34,18 @@ public class Table {
 
   StringBuilder insertList;
 
+  @Getter
+  StringBuilder savesInsertList;
+
+  @Getter
+  StringBuilder savesInsertValues;
+
   StringBuilder updateSet;
 
   StringBuilder saveOnDuplicateSet;
+
+  @Getter
+  StringBuilder savesOnDuplicateSet;
 
   StringBuilder queryList = new StringBuilder();
 
@@ -67,7 +76,7 @@ public class Table {
 
       setJavaFields(column);
     }
-    queryList.setLength(queryList.length() - 1);
+    reduceLengthOne(queryList);
     setInsertList();
     setUpdateSet();
     setWhere();
@@ -91,7 +100,7 @@ public class Table {
     for (Column column : getPrimaryColumns()) {
       primaryColumnList.append(column.columnName).append(',');
     }
-    primaryColumnList.setLength(primaryColumnList.length() - 1);
+    reduceLengthOne(primaryColumnList);
   }
 
   private void setWhereId() {
@@ -123,6 +132,7 @@ public class Table {
   private void setUpdateSet() {
     updateSet = new StringBuilder();
     saveOnDuplicateSet = new StringBuilder();
+    savesOnDuplicateSet = new StringBuilder();
     for (Column column : getNoPrimaryColumn()) {
       if (column.isAutoGenerator()) {
         continue;
@@ -134,6 +144,15 @@ public class Table {
       saveOnDuplicateSet.append("			<if test=\"").append(column.getJavaName())
               .append(" != null \">\r\n				").append(column.getColumnName()).append("=values(")
               .append(column.getColumnName()).append("),\r\n			</if>\r\n");
+
+      savesOnDuplicateSet.append(column.getColumnName()).append("=values(").append(column.getColumnName()).append("),");
+    }
+    reduceLengthOne(savesOnDuplicateSet);
+  }
+
+  private void reduceLengthOne(StringBuilder sb) {
+    if (sb != null && sb.length() > 0) {
+      sb.setLength(sb.length() - 1);
     }
   }
 
@@ -149,8 +168,12 @@ public class Table {
   private void setInsertList() {
     StringBuilder part1 = new StringBuilder("<trim suffixOverrides=\",\">\r\n");
     StringBuilder part2 = new StringBuilder("<trim suffixOverrides=\",\">\r\n");
+    savesInsertList = new StringBuilder();
+    savesInsertValues = new StringBuilder();
     for (Column column : getAllColumn()) {
       if (!column.isAutoGenerator() || column.isPrimaryKey()) {
+        savesInsertList.append(column.getColumnName()).append(',');
+        savesInsertValues.append("#{item.").append(column.getJavaName()).append("},");
         part1.append("			<if test=\"").append(column.getJavaName()).append("!=null\">\r\n				")
                 .append(column.getColumnName())
                 .append(",\r\n			</if>\r\n");
@@ -159,6 +182,8 @@ public class Table {
                 .append(column.getJavaName()).append("},\r\n			</if>\r\n");
       }
     }
+    reduceLengthOne(savesInsertList);
+    reduceLengthOne(savesInsertValues);
     part1.append("		</trim>\r\n		) values (\r\n		");
     part2.append("		</trim>\r\n");
 
