@@ -1,40 +1,30 @@
 package com.cwl.tool.util;
 
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class GroupLock implements Lock {
+public class GroupLock {
 
-    private ReentrantLock[] locks;
-    @Override
-    public void lock() {
+  private ReentrantLock[] locks;
+  private int lockSize;
 
+  public GroupLock(int lockSize) {
+    this.lockSize = lockSize;
+    locks = new ReentrantLock[lockSize];
+    for (int i = 0; i < lockSize; i++) {
+      locks[i] = new ReentrantLock();
     }
+  }
 
-    @Override
-    public void lockInterruptibly() throws InterruptedException {
+  public GroupLock() {
+    this(16);
+  }
 
-    }
 
-    @Override
-    public boolean tryLock() {
-        return false;
-    }
+  public void lock(Object key) {
+    locks[key.hashCode() % lockSize].lock();
+  }
 
-    @Override
-    public boolean tryLock(long l, TimeUnit timeUnit) throws InterruptedException {
-        return false;
-    }
-
-    @Override
-    public void unlock() {
-
-    }
-
-    @Override
-    public Condition newCondition() {
-        return null;
-    }
+  public void unlock(Object key) {
+    locks[key.hashCode() % lockSize].unlock();
+  }
 }
