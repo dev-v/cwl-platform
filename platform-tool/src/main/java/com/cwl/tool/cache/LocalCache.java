@@ -4,7 +4,6 @@ import com.cwl.tool.util.GroupLock;
 import org.apache.commons.collections.map.LRUMap;
 
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * <pre>
@@ -60,18 +59,14 @@ public class LocalCache extends AbstractCacheService {
   public <T> T get(Object key, Class<T> clz, Callable<T> callable) {
     T t = this.get(key, clz);
     if (t == null) {
-      t = callWithLock(key, clz, callable);
-      caches.put(key, t);
-      lock.unlock(key);
-    }
-    return t;
-  }
-
-  private <T> T callWithLock(Object key, Class<T> clz, Callable<T> callable) {
-    lock.lock(key);
-    T t = this.get(key, clz);
-    if (t == null) {
-      t = callable.call();
+      try {
+        t = callWithLock(key, clz, callable);
+        if (t != null) {
+          caches.put(key, t);
+        }
+      } finally {
+        lock.unlock(key);
+      }
     }
     return t;
   }
@@ -80,11 +75,23 @@ public class LocalCache extends AbstractCacheService {
   public <T> T get(Object key, Class<T> clz, Callable<T> callable, int expireSeconds) {
     T t = this.get(key, clz);
     if (t == null) {
-      t = callWithLock(key, clz, callable);
-      if (t != null) {
-        caches.put(key, ExpireObject.newInstance(t, expireSeconds));
+      try {
+        t = callWithLock(key, clz, callable);
+        if (t != null) {
+          caches.put(key, ExpireObject.newInstance(t, expireSeconds));
+        }
+      } finally {
+        lock.unlock(key);
       }
-      lock.unlock(key);
+    }
+    return t;
+  }
+
+  private <T> T callWithLock(Object key, Class<T> clz, Callable<T> callable) {
+    lock.lock(key);
+    T t = this.get(key, clz);
+    if (t == null) {
+      return callable.call();
     }
     return t;
   }
