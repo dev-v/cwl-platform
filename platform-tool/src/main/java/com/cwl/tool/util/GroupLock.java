@@ -21,10 +21,15 @@ public class GroupLock {
 
 
   public void lock(Object key) {
-    locks[key.hashCode() % lockSize].lock();
+    locks[getIdx(key)].lock();
   }
 
   public void unlock(Object key) {
-    locks[key.hashCode() % lockSize].unlock();
+    locks[getIdx(key)].unlock();
+  }
+
+  private int getIdx(Object key) {
+    int hash = key.hashCode();
+    return (hash > 0 ? hash : -hash) % lockSize;
   }
 }
