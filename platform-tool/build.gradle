@@ -4,4 +4,7 @@ dependencies {
   compile('redis.clients:jedis:2.9.0')
   compile('biz.paluch.redis:lettuce:4.4.2.Final')
   compile('org.springframework.boot:spring-boot-starter-data-redis')
+
+  compile("org.apache.curator:curator-framework:$apacheCuratorVersion")
+  compile("org.apache.zookeeper:zookeeper:$zookeeperVersion")
 }
