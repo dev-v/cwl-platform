@@ -41,7 +41,6 @@ public class ZKNodeImpl<V> implements ZKNode<V> {
       }
       curatorFrameworks.put(config.getHost(), client);
     }
-    log.info("zookeeper-获取根节点：" + config.getRootPath());
     return ZKUtil.saveNodeInstance(client, config.getRootPath(), null);
   }
 

@@ -15,7 +15,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ZKConfig {
   private String host;
 
-  private String rootPath;
-
   private int retryConnectionIntervalSeconds = 30;
 }
