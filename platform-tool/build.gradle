@@ -5,6 +5,8 @@ dependencies {
   compile('biz.paluch.redis:lettuce:4.4.2.Final')
   compile('org.springframework.boot:spring-boot-starter-data-redis')
 
-  compile("org.apache.curator:curator-framework:$apacheCuratorVersion")
+  compile("org.apache.curator:curator-framework:$apacheCuratorVersion") {
+    exclude group: 'org.apache.zookeeper', module: 'zookeeper'
+  }
   compile("org.apache.zookeeper:zookeeper:$zookeeperVersion")
 }
