@@ -1,9 +1,9 @@
 package com.cwl.tool.cache;
 
+import com.cwl.tool.util.GroupLock;
 import org.apache.commons.collections.map.LRUMap;
 
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * <pre>
@@ -24,7 +24,7 @@ public class LocalCache extends AbstractCacheService {
     caches = new LRUMap(100_000);
   }
 
-  private ReentrantLock lock = new ReentrantLock();
+  private GroupLock lock = new GroupLock();
 
   @Override
   public void put(Object key, Object object) {
@@ -61,19 +61,12 @@ public class LocalCache extends AbstractCacheService {
     if (t == null) {
       try {
         t = callWithLock(key, clz, callable);
-        caches.put(key, t);
+        if (t != null) {
+          caches.put(key, t);
+        }
       } finally {
-        lock.unlock();
+        lock.unlock(key);
       }
-    }
-    return t;
-  }
-
-  private <T> T callWithLock(Object key, Class<T> clz, Callable<T> callable) {
-    lock.lock();
-    T t = this.get(key, clz);
-    if (t == null) {
-      t = callable.call();
     }
     return t;
   }
@@ -88,8 +81,17 @@ public class LocalCache extends AbstractCacheService {
           caches.put(key, ExpireObject.newInstance(t, expireSeconds));
         }
       } finally {
-        lock.unlock();
+        lock.unlock(key);
       }
+    }
+    return t;
+  }
+
+  private <T> T callWithLock(Object key, Class<T> clz, Callable<T> callable) {
+    lock.lock(key);
+    T t = this.get(key, clz);
+    if (t == null) {
+      return callable.call();
     }
     return t;
   }
@@ -100,6 +102,7 @@ public class LocalCache extends AbstractCacheService {
   }
 
   static final class ExpireObject {
+
     //过期时间
     private long expireTime;
 
