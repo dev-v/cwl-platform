@@ -11,11 +11,13 @@ import org.junit.Test;
  */
 public class ZKNodeImplTest {
   ZKNodeFactory factory;
+  ZKNode rootNode;
 
   public ZKNodeImplTest() {
     ZKConfig config = new ZKConfig();
     config.setHost("localhost:2181");
     factory = new ZKNodeFactory(config);
+    rootNode = factory.getRootNodeInstance("/test");
   }
 
 
@@ -42,10 +44,6 @@ public class ZKNodeImplTest {
 
   }
 
-  public void delete() {
-
-  }
-
   public boolean exist(String childPath) {
     return false;
   }
@@ -65,9 +63,14 @@ public class ZKNodeImplTest {
 
   @Test
   public void createEphemeralNode() {
-    boolean res = factory.getRootNodeInstance("/test")
-            .createEphemeralNode("/tmp1");
+    String tmp = "/tmp1";
+    boolean res = rootNode.createEphemeralNode(tmp);
+    rootNode.delete(tmp);
     System.out.println(res);
+  }
+
+  public void delete() {
+
   }
 
 }

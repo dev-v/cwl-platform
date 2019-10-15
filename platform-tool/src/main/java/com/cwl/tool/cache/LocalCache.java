@@ -87,6 +87,11 @@ public class LocalCache extends AbstractCacheService {
     return t;
   }
 
+  @Override
+  public void remove(Object key) {
+    caches.remove(key);
+  }
+
   private <T> T callWithLock(Object key, Class<T> clz, Callable<T> callable) {
     lock.lock(key);
     T t = this.get(key, clz);

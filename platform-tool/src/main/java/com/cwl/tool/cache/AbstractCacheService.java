@@ -40,4 +40,9 @@ public abstract class AbstractCacheService implements ICacheService {
   public int size() {
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public void remove(Object key) {
+    throw new UnsupportedOperationException();
+  }
 }

@@ -79,6 +79,8 @@ public interface ICacheService {
    */
   void put(Object object);
 
+  void remove(Object key);
+
   /**
    * <pre>
    * 根据id获取缓存对象
