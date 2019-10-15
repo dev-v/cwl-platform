@@ -10,17 +10,18 @@ import org.junit.Test;
  * @author chenwl 2019/10/14
  */
 public class ZKNodeImplTest {
-  ZKConfig config = new ZKConfig();
+  ZKNodeFactory factory;
 
   public ZKNodeImplTest() {
+    ZKConfig config = new ZKConfig();
     config.setHost("localhost:2181");
-    config.setRootPath("/test");
+    factory = new ZKNodeFactory(config);
   }
 
 
   @Test
   public void getRootNodeInstance() {
-    ZKNode ZKNode = ZKNodeImpl.getRootNodeInstance(config);
+    ZKNode ZKNode = factory.getRootNodeInstance("/test");
     System.out.println(ZKNode);
   }
 
@@ -64,7 +65,8 @@ public class ZKNodeImplTest {
 
   @Test
   public void createEphemeralNode() {
-    boolean res = ZKNodeImpl.getRootNodeInstance(config).createEphemeralNode("/tmp1");
+    boolean res = factory.getRootNodeInstance("/test")
+            .createEphemeralNode("/tmp1");
     System.out.println(res);
   }
 
