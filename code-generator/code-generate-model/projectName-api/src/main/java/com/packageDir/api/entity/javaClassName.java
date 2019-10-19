@@ -1,6 +1,7 @@
 package com.#{packageName}.api.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * <li>文件名称: #{javaClassName}.java</li>
@@ -13,6 +14,7 @@ import lombok.Data;
  * @author dev-v
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class #{javaClassName} {
 	#{javaFields}
 }
